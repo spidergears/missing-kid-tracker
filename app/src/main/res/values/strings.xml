@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MissingKidTracker</string>
+    <string name="menu_take_photo">Take Photo</string>
+</resources>

@@ -1,7 +1,6 @@
 package com.shekhargulati.missingkidtracker;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -49,6 +48,5 @@ public class PreviewActivity extends AppCompatActivity {
                 .error(R.drawable.kid)
                 .into(previewView);
     }
-
 
 }

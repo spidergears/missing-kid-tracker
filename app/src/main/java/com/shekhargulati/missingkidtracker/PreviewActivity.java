@@ -1,18 +1,18 @@
 package com.shekhargulati.missingkidtracker;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
 import java.io.File;
-import java.io.IOException;
 
 public class PreviewActivity extends AppCompatActivity {
 
@@ -29,43 +29,26 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
     private void setPic() {
-        final String tag = getString(R.string.app_name);
-        try {
-            ImageView imageView = (ImageView) this.findViewById(R.id.image_preview);
-            imageView.setVisibility(View.VISIBLE);
-            Bitmap bitmap = createScaledBitmap(capturedPhotoPath);
-            imageView.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            Log.e(tag, "Error encountered while doing image preview", e);
-        }
-    }
-
-    public Bitmap createScaledBitmap(String pathName) throws IOException {
-        final BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inSampleSize = 2;
-        opt.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(pathName, opt);
+        ImageView previewView = (ImageView) this.findViewById(R.id.image_preview);
         File file = new File(capturedPhotoPath);
-        Bitmap rotatedBitmap;
-        ExifInterface exif = new ExifInterface(file.getPath());
-        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        int rotationInDegrees = exifToDegrees(rotation);
-        Matrix matrix = new Matrix();
-        if (rotation != 0f) {
-            matrix.preRotate(rotationInDegrees);
-        }
-        rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        return rotatedBitmap;
+        Glide
+                .with(this)
+                .load(file)
+                .listener(new RequestListener<File, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, File model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        Log.e(getString(R.string.app_name), "Exception occurred while loading image", e);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, File model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .error(R.drawable.kid)
+                .into(previewView);
     }
 
-    private static int exifToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }
+
 }

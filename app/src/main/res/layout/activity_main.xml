@@ -9,11 +9,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.shekhargulati.missingkidtracker.MainActivity">
 
-    <ImageView
-        android:id="@+id/image_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="center"
-        android:visibility="visible" />
 </RelativeLayout>

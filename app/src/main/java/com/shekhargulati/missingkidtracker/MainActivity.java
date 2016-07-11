@@ -31,10 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String IMAGE_EXTENSION = ".jpg";
     private String capturedPhotoPath;
     private final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 12345;
+    private final String tag = "MissingKid:Main";
 
-    private String getTag(){
-        return getString(R.string.app_name);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         final String albumPath = galleryPath + File.separator + albumName;
         File albumDir = new File(albumPath);
         if (!albumDir.isDirectory() && !albumDir.mkdirs()) {
-            Log.e(getTag(), String.format("Unable to create album directory at [%s]", albumPath));
+            Log.e(tag, String.format("Unable to create album directory at [%s]", albumPath));
             return;
         }
         try {
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
         catch (IOException ioe){
-            Log.e(getTag(), "Exception encountered while creating file for storing image", ioe);
+            Log.e(tag, "Exception encountered while creating file for storing image", ioe);
         }
 
 
@@ -155,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final String tag = getString(R.string.app_name);
         if (resultCode == RESULT_OK) {
             Log.d(tag, String.format("Photo is successfully saved to [%s]", capturedPhotoPath));
             addPicToGallery();

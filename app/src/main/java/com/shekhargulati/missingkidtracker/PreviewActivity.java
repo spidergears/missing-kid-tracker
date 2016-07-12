@@ -25,6 +25,7 @@ public class PreviewActivity extends AppCompatActivity {
     private String capturedPhotoPath;
     private ShareActionProvider shareActionProvider;
     private Intent shareIntent = new Intent();
+    private final String tag = "MissingKid:Preview";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class PreviewActivity extends AppCompatActivity {
                 .listener(new RequestListener<File, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, File model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        Log.e(getString(R.string.app_name), "Exception occurred while loading image", e);
+                        Log.e(tag, "Exception occurred while loading image", e);
                         return false;
                     }
 

@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/textView"
@@ -21,6 +22,14 @@
             android:text="Preview"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/location_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Hello"
+            android:alpha="0.5"
+            android:elegantTextHeight="true" />
 
         <ImageView
             android:id="@+id/image_preview"

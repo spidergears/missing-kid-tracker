@@ -1,6 +1,7 @@
 package com.shekhargulati.missingkidtracker;
 
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -11,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -22,7 +25,9 @@ import java.io.File;
 public class PreviewActivity extends AppCompatActivity {
 
     public static final String CAPTURED_PHOTO_PATH = "capturedPhotoPath";
+    public static final String CAPTURE_LOCATION  = "captureLocation";
     private String capturedPhotoPath;
+    private Location captureLocation;
     private ShareActionProvider shareActionProvider;
     private Intent shareIntent = new Intent();
     private final String tag = "MissingKid:Preview";
@@ -33,10 +38,14 @@ public class PreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview);
         Intent intent = getIntent();
         this.capturedPhotoPath = intent.getStringExtra(CAPTURED_PHOTO_PATH);
-        setPic();
+        this.captureLocation = intent.getParcelableExtra(CAPTURE_LOCATION);
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(capturedPhotoPath)));
         shareIntent.setType("image/jpeg");
+
+        setPic();
+        setLocation();
+
 
     }
 
@@ -76,6 +85,22 @@ public class PreviewActivity extends AppCompatActivity {
                 })
                 .error(R.drawable.kid)
                 .into(previewView);
+    }
+
+    private void setLocation(){
+        TextView locationTextView = (TextView) this.findViewById(R.id.location_textView);
+
+        if (captureLocation != null){
+            String locationText = String.format("Latitude:%f, Longitude:%f\nAccurate upto :%.2f meters",
+                    captureLocation.getLatitude(),
+                    captureLocation.getLongitude(),
+                    captureLocation.getAccuracy()
+                    );
+            locationTextView.setText(locationText);
+        }
+        else {
+            locationTextView.setText("Could not recognise location. Please try again");
+        }
     }
 
 }
